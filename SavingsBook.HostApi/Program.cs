@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using SavingsBook.Application.AutoMapperProfile;
 using SavingsBook.Application.Contracts.FileUploadClient;
+using SavingsBook.Application.Contracts.Paypal;
 using SavingsBook.Application.FileUploadClient;
+using SavingsBook.Application.Paypal;
 using SavingsBook.Application.Redis;
 using SavingsBook.Infrastructure.Authentication;
 using SavingsBook.Infrastructure.MongoDbConfig;
@@ -47,16 +49,21 @@ var mongoDbConfig = new MongoDbIdentityConfiguration()
     }
 };
 
+
+
+
 builder.Services.InitMongoCollections();
 
-#region Register custom services
+#region Register application services
 
 // builder.Services.AddScoped<IStoreService, StoreService>();
 // builder.Services.AddScoped<IStoreCategoryService, StoreCategoryService>();
 
-
 builder.Services.AddScoped<RedisCacheService>();
 builder.Services.AddScoped<IFileUploadClient, FileUploadClient>();
+builder.Services.AddHttpClient<IPayPalService, PaypalService>();
+builder.Services.AddScoped<IPayPalService, PaypalService>();
+
 
 #endregion
 
@@ -108,6 +115,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(opts =>
+{
+    opts.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+});
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
