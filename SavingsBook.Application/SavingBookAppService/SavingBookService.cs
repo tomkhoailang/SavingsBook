@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using SavingsBook.Application.Contracts.Authentication;
 using SavingsBook.Application.Contracts.Common;
 using SavingsBook.Application.Contracts.Paypal;
 using SavingsBook.Application.Contracts.Paypal.PaypalOrderDto.Request;

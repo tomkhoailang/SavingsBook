@@ -46,7 +46,7 @@ namespace SavingsBook.HostApi.Controllers
             }
             user = new ApplicationUser
             {
-                Email = input.Email, UserName = input.Username, FullName = "", Address = "", IdCardNumber = "", ConcurrencyStamp = Guid.NewGuid().ToString()
+                Email = input.Email, UserName = input.Username, FullName = "", Address = new(), IdCardNumber = "", ConcurrencyStamp = Guid.NewGuid().ToString()
             };
             var createUserResult = await _userManager.CreateAsync(user, input.Password);
             if (!createUserResult.Succeeded)

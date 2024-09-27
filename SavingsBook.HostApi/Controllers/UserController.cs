@@ -96,7 +96,7 @@ public class UserController : ControllerBase
 
         user.Email = input.Email ?? user.Email;
         user.FullName = input.FullName ?? user.FullName;
-        user.Address = input.Address ?? user.Address;
+        // user.Address = input.Address ?? user.Address;
         user.IdCardNumber = input.IdCardNumber ?? user.IdCardNumber;
 
         var result = await _userManager.UpdateAsync(user);
