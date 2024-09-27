@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using SavingsBook.Application.AutoMapperProfile;
+using SavingsBook.Application.Contracts.Authentication;
 using SavingsBook.Application.Contracts.FileUploadClient;
 using SavingsBook.Application.Contracts.Paypal;
 using SavingsBook.Application.Contracts.SavingBook;
@@ -63,6 +64,7 @@ builder.Services.InitMongoCollections();
 
 // builder.Services.AddScoped<IStoreService, StoreService>();
 // builder.Services.AddScoped<IStoreCategoryService, StoreCategoryService>();
+
 
 builder.Services.AddScoped<RedisCacheService>();
 builder.Services.AddScoped<IFileUploadClient, FileUploadClient>();
