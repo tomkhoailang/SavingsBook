@@ -12,5 +12,8 @@
 		public bool IsDeleted { get; set; }
 		public DateTime? DeletionTime { get; set; }
 		public Guid? DeleterId { get; set; }
+		public bool IsActive { get; set; }
+		public string Keyword { get; set; }
+
 	}
 }

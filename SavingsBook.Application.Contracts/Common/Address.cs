@@ -1,4 +1,4 @@
-﻿namespace SavingsBook.Domain.Common;
+﻿namespace SavingsBook.Application.Contracts.Common;
 
 public class Address
 {

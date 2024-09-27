@@ -1,5 +1,3 @@
-using System.Net.Http.Headers;
-using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SavingsBook.Infrastructure.Authentication;
@@ -19,6 +17,7 @@ public class UserController : ControllerBase
     [HttpGet]
     public async  Task<IActionResult> GetUserInfo(string id)
     {
+
         var user = await _userManager.FindByIdAsync(id);
         if (user == null)
         {

@@ -7,6 +7,6 @@ namespace SavingsBook.Application.Contracts.Paypal;
 public interface IPayPalService
 {
     Task<PayoutBatchResponse> SendPayoutAsync(PayoutRequest payoutRequest);
-    Task<PayPalOrderResponse> CreateOrderAsync(CreateOrderRequest orderRequest);
+    Task<PayPalOrderResponse> CreateOrderAsync(InitOrderRequest orderRequest);
     Task<PayPalCaptureResponse> CaptureOrderAsync(string orderId);
 }

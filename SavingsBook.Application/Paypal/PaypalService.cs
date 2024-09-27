@@ -64,7 +64,7 @@ public class PaypalService: IPayPalService
         return JsonConvert.DeserializeObject<PayoutBatchResponse>(responseString);
     }
 
-    public async Task<PayPalOrderResponse> CreateOrderAsync(CreateOrderRequest orderRequest)
+    public async Task<PayPalOrderResponse> CreateOrderAsync(InitOrderRequest input)
     {
         var token = await GetPayPalTokenAsync();
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -77,8 +77,8 @@ public class PaypalService: IPayPalService
             [
                 new PurchaseUnit
                 {
-                    ReferenceId = "d9f80740-38f0-11e8-b467-0ed5f89f718b",
-                    Amount = new Amount { CurrencyCode = "USD", Value = "100.00" }
+                    ReferenceId = input.SavingBookId,
+                    Amount = new Amount { CurrencyCode = "USD", Value = input.Amount }
                 }
             ],
             PaymentSource = new PaymentSource

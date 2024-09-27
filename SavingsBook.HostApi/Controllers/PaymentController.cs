@@ -29,9 +29,9 @@ public class PaymentController : ControllerBase
     }
     [HttpPost]
     [Route("create-order")]
-    public async  Task<IActionResult> CreateOrder()
+    public async  Task<IActionResult> CreateOrder(InitOrderRequest input)
     {
-        var response = await _payPalService.CreateOrderAsync(new());
+        var response = await _payPalService.CreateOrderAsync(input);
         return Ok(response);
 
     }

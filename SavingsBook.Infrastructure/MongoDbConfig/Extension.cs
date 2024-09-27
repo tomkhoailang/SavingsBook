@@ -5,6 +5,8 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using SavingsBook.Domain.Common;
+using SavingsBook.Domain.SavingBook;
+using SavingsBook.Domain.SavingRegulation;
 using SavingsBook.Infrastructure.Repositories;
 
 namespace SavingsBook.Infrastructure.MongoDbConfig;
@@ -41,9 +43,9 @@ public static class Extension
     public static IServiceCollection InitMongoCollections(this IServiceCollection services)
     {
         services
-            .AddMongo();
-            // .AddMongoRepository<Store>("Store")
-            // .AddMongoRepository<StoreCategory>("StoreCategory");
+            .AddMongo()
+            .AddMongoRepository<SavingRegulation>("SavingRegulation")
+            .AddMongoRepository<SavingBook>("SavingBook");
         
         
         

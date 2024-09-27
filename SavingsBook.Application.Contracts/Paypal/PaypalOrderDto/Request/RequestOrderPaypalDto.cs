@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace SavingsBook.Application.Contracts.Paypal.PaypalOrderDto.Request;
 
@@ -6,6 +7,13 @@ namespace SavingsBook.Application.Contracts.Paypal.PaypalOrderDto.Request;
 public class CaptureOrderRequest
 {
     public string OrderId { get; set; }
+}
+public class InitOrderRequest
+{
+    [Required]
+    public string SavingBookId { get; set; }
+    [Required]
+    public string Amount { get; set; }
 }
 public class CreateOrderRequest
 {

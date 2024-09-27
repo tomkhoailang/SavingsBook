@@ -7,9 +7,14 @@ using Microsoft.IdentityModel.Tokens;
 using SavingsBook.Application.AutoMapperProfile;
 using SavingsBook.Application.Contracts.FileUploadClient;
 using SavingsBook.Application.Contracts.Paypal;
+using SavingsBook.Application.Contracts.SavingBook;
+using SavingsBook.Application.Contracts.SavingRegulation;
 using SavingsBook.Application.FileUploadClient;
 using SavingsBook.Application.Paypal;
 using SavingsBook.Application.Redis;
+using SavingsBook.Application.SavingBookAppService;
+using SavingsBook.Application.SavingRegulationAppService;
+using SavingsBook.HostApi.Middleware;
 using SavingsBook.Infrastructure.Authentication;
 using SavingsBook.Infrastructure.MongoDbConfig;
 using SavingsBook.Infrastructure.RolesConfig;
@@ -63,6 +68,8 @@ builder.Services.AddScoped<RedisCacheService>();
 builder.Services.AddScoped<IFileUploadClient, FileUploadClient>();
 builder.Services.AddHttpClient<IPayPalService, PaypalService>();
 builder.Services.AddScoped<IPayPalService, PaypalService>();
+builder.Services.AddScoped<ISavingRegulationService, SavingRegulationService>();
+builder.Services.AddScoped<ISavingBookService, SavingBookService>();
 
 
 #endregion
@@ -121,6 +128,8 @@ app.UseCors(opts =>
         .AllowAnyHeader()
         .AllowAnyMethod();
 });
+
+app.UseMiddleware<GlobalMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
