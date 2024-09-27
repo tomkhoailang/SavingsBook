@@ -30,18 +30,18 @@ public class SavingBookService : ISavingBookService
     }
 
     //for manager with cash
-    public async Task<SavingBookDto> CreateAsync(CreateUpdateSavingBookDto input)
+    public async Task<ResponseDto<SavingBookDto>> CreateAsync(CreateUpdateSavingBookDto input)
     {
         var user = await _userManager.FindByIdAsync(input.AccountId);
         if (user == null)
-            throw new ApplicationException($"User  not found");
+            return new ResponseDto<SavingBookDto>() { Success = false, Message = "User does not exist." };
         var entity = _mapper.Map<SavingBook>(input);
         entity.Address = _mapper.Map<Address>(user.Address);
         entity.AccountId = user.Id;
         entity.IdCardNumber = user.IdCardNumber;
         await _savingBookRepository.InsertAsync(entity);
 
-        return _mapper.Map<SavingBookDto>(entity);
+        return new ResponseDto<SavingBookDto>() { Success = true, Data = _mapper.Map<SavingBookDto>(entity) };
     }
     //for user with paypal
     public async Task<SavingBookWithPaymentUrlDto> CreateWithUserDataAsync (CreateUpdateSavingBookUserDto input, string name)
@@ -82,27 +82,27 @@ public class SavingBookService : ISavingBookService
                 await _savingBookRepository.DeleteAsync(entity.Id);
             }
 
-            throw new ApplicationException("Failed to create SavingBook with payment", ex);
+            throw new ApplicationException("Failed to create SavingBook with payment: ", ex);
         }
     }
 
 
-    public Task<SavingBookDto> UpdateAsync(Guid id, CreateUpdateSavingBookDto input)
+    public Task<ResponseDto<SavingBookDto>> UpdateAsync(Guid id, CreateUpdateSavingBookDto input)
     {
         throw new NotImplementedException();
     }
 
-    public Task<SavingBookDto> GetAsync(Guid id)
+    public Task<ResponseDto<SavingBookDto>> GetAsync(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<PageResultDto<SavingBookDto>> GetListAsync(QuerySavingBookDto input, CancellationToken cancellationToken)
+    public Task<ResponseDto<PageResultDto<SavingBookDto>>> GetListAsync(QuerySavingBookDto input, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> DeleteAsync(Guid id)
+    public Task<ResponseDto<bool>> DeleteAsync(Guid id)
     {
         throw new NotImplementedException();
     }

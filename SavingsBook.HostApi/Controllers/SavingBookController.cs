@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SavingsBook.Application.Contracts.SavingBook;
 using SavingsBook.Application.Contracts.SavingBook.Dto;
+using SavingsBook.HostApi.Utility;
 
 namespace SavingsBook.HostApi.Controllers;
 
@@ -28,7 +29,7 @@ public class SavingBookController : ControllerBase
         // }
         // var response = await _savingBookService.CreateWithUserDataAsync(input, username);
         var response = await _savingBookService.CreateAsync(input);
-        return response != null ? Ok(response) : BadRequest();
+        return ResponseHelper.FormatResponse(response);
     }
     //for manager with cash
     [HttpPost("Payment")]

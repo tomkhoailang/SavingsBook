@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SavingsBook.Application.Contracts.SavingRegulation;
 using SavingsBook.Application.Contracts.SavingRegulation.Dto;
+using SavingsBook.HostApi.Utility;
 
 namespace SavingsBook.HostApi.Controllers;
 
@@ -19,7 +20,7 @@ public class SavingRegulationController : ControllerBase
     public async Task<IActionResult> CreateSavingRegulation([FromBody] CreateUpdateSavingRegulationDto input)
     {
         var response = await _savingRegulationService.CreateAsync(input);
-        return Ok(response);
+        return ResponseHelper.FormatResponse(response);
     }
 
     [HttpPut]
@@ -27,25 +28,20 @@ public class SavingRegulationController : ControllerBase
         [FromBody] CreateUpdateSavingRegulationDto input)
     {
         var response = await _savingRegulationService.UpdateAsync(id, input);
-        return Ok(response);
+        return ResponseHelper.FormatResponse(response);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetSavingRegulationList([FromQuery] QuerySavingRegulationDto input, CancellationToken cancellationToken)
     {
         var response = await _savingRegulationService.GetListAsync(input, cancellationToken);
-        return Ok(response);
+        return ResponseHelper.FormatResponse(response);
     }
 
     [HttpDelete]
     public async Task<IActionResult> DeleteSavingRegulation([FromQuery] Guid id)
     {
-        var result = await _savingRegulationService.DeleteAsync(id);
-        if (result)
-        {
-            return NoContent();
-        }
-
-        return NotFound();
+        var response = await _savingRegulationService.DeleteAsync(id);
+        return ResponseHelper.FormatResponse(response);
     }
 }

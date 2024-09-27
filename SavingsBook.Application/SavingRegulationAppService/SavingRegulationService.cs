@@ -20,33 +20,38 @@ public class SavingRegulationService : ISavingRegulationService
         _mapper = mapper;
     }
 
-    public async Task<SavingRegulationDto> CreateAsync(CreateUpdateSavingRegulationDto input)
+    public async Task<ResponseDto<SavingRegulationDto>> CreateAsync(CreateUpdateSavingRegulationDto input)
     {
         var entity = _mapper.Map<SavingRegulation>(input);
         await _savingRegulationRepository.InsertAsync(entity);
-        return _mapper.Map<SavingRegulationDto>(entity);
+        return new ResponseDto<SavingRegulationDto>().SetSuccess(_mapper.Map<SavingRegulationDto>(entity),201);
     }
 
-    public async Task<SavingRegulationDto> UpdateAsync(Guid id, CreateUpdateSavingRegulationDto input)
+    public async Task<ResponseDto<SavingRegulationDto>> UpdateAsync(Guid id, CreateUpdateSavingRegulationDto input)
     {
         var entity = await _savingRegulationRepository.FirstOrDefaultAsync(n => n.Id == id);
-        if (entity == null) throw new Exception("Entity not found.");
+        if (entity == null)
+        {
+            return new ResponseDto<SavingRegulationDto>().SetFailure(404, "Saving regulation record not found");
+        }
+
         _mapper.Map(input, entity);
         await _savingRegulationRepository.UpdateAsync(entity);
-        return _mapper.Map<SavingRegulationDto>(entity);
+
+        return new ResponseDto<SavingRegulationDto>().SetSuccess(_mapper.Map<SavingRegulationDto>(entity));
     }
 
-    public Task<SavingRegulationDto> GetAsync(Guid id)
+    public Task<ResponseDto<SavingRegulationDto>> GetAsync(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<PageResultDto<SavingRegulationDto>> GetListAsync(QuerySavingRegulationDto input,
+    public async Task<ResponseDto<PageResultDto<SavingRegulationDto>>> GetListAsync(QuerySavingRegulationDto input,
         CancellationToken cancellationToken)
     {
         Expression<Func<SavingRegulation, bool>> query = x => true;
 
-        var count = await _savingRegulationRepository.CountAsync(query);
+        var totalCount = await _savingRegulationRepository.CountAsync(query);
         var items = (await _savingRegulationRepository.GetQueryableAsync())
             .Skip(input.SkipCount)
             .Take(input.MaxResultCount > 0 ? input.MaxResultCount : 25)
@@ -55,11 +60,19 @@ public class SavingRegulationService : ISavingRegulationService
             .ToList();
 
 
-        return new PageResultDto<SavingRegulationDto> { Items = items, TotalCount = count };
+        return new ResponseDto<PageResultDto<SavingRegulationDto>>().SetSuccess(
+            new PageResultDto<SavingRegulationDto>() { Items = items, TotalCount = totalCount });
+
     }
 
-    public async Task<bool> DeleteAsync(Guid id)
+    public async Task<ResponseDto<bool>> DeleteAsync(Guid id)
     {
-        return await _savingRegulationRepository.DeleteAsync(id);
+        var result = await _savingRegulationRepository.DeleteAsync(id);
+        if (!result)
+        {
+            return new ResponseDto<bool>().SetFailure(404, "Saving regulation record not found");
+        }
+
+        return new ResponseDto<bool>().SetSuccess(result, 204);
     }
 }
